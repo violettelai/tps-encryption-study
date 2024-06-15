@@ -1,23 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
-<body>
-    <h1>Login</h1>
-    <form id="loginForm">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        <input type="submit" value="Login">
-    </form>
-    <p id="loginResponse"></p>
-    <button onclick="window.location.href='/register'">Register</button>
+
+<body id="loginBody">
+    <div class="container centerDiv">
+        <div class="sectionContainer rSection centerDiv" id="loginSection">
+            <div>
+                <h1>Login</h1>
+            </div>
+            <div class="centerDiv">
+                <form id="loginForm">
+                    <div class="fixedSizeForm">
+                        <label for="username">Username</label><br>
+                        <input type="text" name="username" class="bottomBorder" placeholder="Username"><br><br>
+                        <label for="password">Password</label><br>
+                        <input type="password" name="password" class="bottomBorder" placeholder="Password"><br><br>
+                    </div>
+                    <p id="loginResponse"></p>
+                    <div class="buttonContainer">
+                        <input type="submit" value="Login" class="button posButton">
+                        <button class="button posButton" onclick="window.location.href='/register'">Register</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
