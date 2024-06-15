@@ -1,6 +1,6 @@
-window.onload = function() {
-  alert("This is a message from script.js!");
-};
+// window.onload = function() {
+//   alert("This is a message from script.js!");
+// };
 
 document.addEventListener("DOMContentLoaded", function() {
   const loginForm = document.getElementById("loginForm");
