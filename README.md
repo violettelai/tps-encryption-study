@@ -1,5 +1,9 @@
-Install all requirements
-`pip install -r requirements.txt`
+1. Install all requirements
+```
+pip install -r requirements.txt
+```
 
-Start server
-`python app.py`
+2. Start server
+```
+python app.py
+```
