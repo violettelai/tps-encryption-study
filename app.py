@@ -33,7 +33,7 @@ def login():
     uname = (username, )
     dbcursor.execute(sql, uname)
     result = dbcursor.fetchone()
-    if(result == None): return "Username not exists."
+    if(result == None): return "Username does not exist."
 
     # Fetch from db
     sql = "SELECT * FROM user WHERE username = %s"
