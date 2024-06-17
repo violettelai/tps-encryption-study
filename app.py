@@ -158,7 +158,7 @@ def visualize():
     plt.ylabel("Encryption Time (ms)")
     plt.title("Encryption Time by Username")
     plt.legend()
-    plt.savefig('static/img/encryption_times.png')
+    # plt.savefig('static/img/encryption_times.png')
     plt.close()
 
     # Plot Decryption Times
@@ -170,7 +170,7 @@ def visualize():
     plt.ylabel("Decryption Time (ms)")
     plt.title("Decryption Time by Username")
     plt.legend()
-    plt.savefig('static/img/decryption_times.png')
+    # plt.savefig('static/img/decryption_times.png')
     plt.close()
 
     # Plot Success Rates
@@ -185,7 +185,7 @@ def visualize():
     plt.ylabel("Success Rate")
     plt.title("Success Rate by Encryption Method")
     plt.ylim(0, 1)
-    plt.savefig('static/img/success_rates.png')
+    # plt.savefig('static/img/success_rates.png')
     plt.close()
 
     return render_template("visualize.html")
