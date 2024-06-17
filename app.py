@@ -17,7 +17,7 @@ def init():
     
     dbcursor.execute("USE pysec")
     # dbcursor = db.cursor()
-    dbcursor.execute("CREATE TABLE IF NOT EXISTS user (username VARCHAR(255) PRIMARY KEY, name VARCHAR(255), pwd VARCHAR(255))")
+    dbcursor.execute("CREATE TABLE IF NOT EXISTS user (username VARCHAR(255) PRIMARY KEY, name VARCHAR(255), pwd VARCHAR(255), rsakey BLOB)")
     return "Database and table successfully created."
 
 @app.route("/login", methods=["POST"])
