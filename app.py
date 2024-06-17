@@ -16,7 +16,7 @@ def init():
     dbcursor.execute("CREATE DATABASE IF NOT EXISTS pysec")   
     dbcursor.execute("USE pysec")
     # dbcursor.execute("DROP Table user")
-    dbcursor.execute("""CREATE TABLE IF NOT EXISTS user (username VARCHAR(255) PRIMARY KEY, name VARCHAR(255), pwd VARCHAR(255), rsaSk BLOB, rsaPk BLOB, rsaCp BLOB, desKey BLOB, desCp BLOB)""")
+    dbcursor.execute("CREATE TABLE IF NOT EXISTS user (username VARCHAR(255) PRIMARY KEY, name VARCHAR(255), pwd VARCHAR(255), rsaSk BLOB, rsaPk BLOB, rsaCp BLOB, desKey BLOB, desCp BLOB, aesKey BLOB, aesNonce BLOB, aesHeader BLOB, aesTag BLOB, aesCp BLOB)")
     # sql = "DELETE FROM user WHERE username = 'vio'"
     # dbcursor.execute(sql)
     # db.commit()
@@ -43,11 +43,9 @@ def login():
     uname = (username, )
     dbcursor.execute(sql, uname)
     result = dbcursor.fetchone()
-    # print(f"result: {result}")
 
     # Decrypt in 3 ways
     # RSA
-    # print(f"get: {result[3]}\n{result[4]}\nciphertext: {result[5]}")
     rsaPwd = RSA.rsa_decrypt(result[5], result[3])
     print(f"RSA Decryption: {rsaPwd}")
 
@@ -55,8 +53,12 @@ def login():
     desPwd = DES.des3_decrypt(result[7], result[6])
     print(f"DES Decryption: {desPwd}")
 
+    #AES    
+    aesPwd = AES.aes_decrypt(result[8], result[9], result[10], result[11], result[12])
+    print(f"AES Decryption: {aesPwd}")
+
     # Check valid credentials
-    if password == rsaPwd and password == desPwd:
+    if password == rsaPwd and password == desPwd and password == aesPwd:
         return f"Welcome, {result[1]}!"
     else:
         return "Invalid credentials, please try again."
@@ -95,13 +97,13 @@ def register():
     desCp, desKey = DES.des3_encrypt(password)
     # print(f"DES key: {desKey}, DES encyrption: {desCp}")
 
-    # AES
-    aesCp, aesKey = AES.aes_encrypt(name, password)
-    print(f"AES key: {aesKey}, AES encyrption: {aesCp}")
+    # AES - use name of user as header data
+    aesKey, aesNonce, aesHeader, aesTag, aesCp = AES.aes_encrypt(name, password)
+    # print(f"AES key: {aesKey}, AES encyrption: {aesCp}")
 
     # Insert DB
-    sql = "INSERT INTO user (username, name, pwd, rsaSk, rsaPk, rsaCp, desKey, desCp) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-    val = (username, name, password, rsaSk, rsaPk, rsaCp, desKey, desCp)
+    sql = "INSERT INTO user (username, name, pwd, rsaSk, rsaPk, rsaCp, desKey, desCp, aesKey, aesNonce, aesHeader, aesTag, aesCp) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    val = (username, name, password, rsaSk, rsaPk, rsaCp, desKey, desCp, aesKey, aesNonce, aesHeader, aesTag, aesCp)
     dbcursor.execute(sql, val)
     db.commit()
     return "Registered successfully!"
