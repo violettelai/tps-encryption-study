@@ -1,6 +1,6 @@
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
-import base64, timeit
+import timeit
 
 def generateKeys():
     # Create an RSA key pair with a key size of 1024 bits
