@@ -48,7 +48,6 @@ def rsa_decrypt(ciphertext, privateKey):
 
 if __name__ == "__main__":
     privateKey, publicKey = generateKeys()
-    print(f"byte: privatekey: {type(privateKey)}, {privateKey}\npublickey: {type(publicKey)}, {publicKey}")
 
     text = 'Hello, Lee Chee Ann (1191103098)!'
 
