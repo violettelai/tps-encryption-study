@@ -15,11 +15,8 @@ def init():
     dbcursor = db.cursor()
     dbcursor.execute("CREATE DATABASE IF NOT EXISTS pysec")   
     dbcursor.execute("USE pysec")
-    # dbcursor.execute("DROP Table user")
     dbcursor.execute("CREATE TABLE IF NOT EXISTS user (username VARCHAR(255) PRIMARY KEY, name VARCHAR(255), pwd VARCHAR(255), rsaSk BLOB, rsaPk BLOB, rsaCp BLOB, desKey BLOB, desCp BLOB, aesKey BLOB, aesNonce BLOB, aesHeader BLOB, aesTag BLOB, aesCp BLOB)")
-    # sql = "DELETE FROM user WHERE username = 'vio'"
-    # dbcursor.execute(sql)
-    # db.commit()
+
     return "Database and table successfully created."
 
 @app.route("/login", methods=["POST"])
@@ -91,15 +88,12 @@ def register():
     # RSA
     rsaSk, rsaPk = RSA.generateKeys()
     rsaCp = RSA.rsa_encrypt(password, rsaPk)
-    # print(f"db: {rsaSk}\n{rsaPk}\nciphertext: {rsaCp}")
 
     # DES
     desCp, desKey = DES.des3_encrypt(password)
-    # print(f"DES key: {desKey}, DES encyrption: {desCp}")
 
     # AES - use name of user as header data
     aesKey, aesNonce, aesHeader, aesTag, aesCp = AES.aes_encrypt(name, password)
-    # print(f"AES key: {aesKey}, AES encyrption: {aesCp}")
 
     # Insert DB
     sql = "INSERT INTO user (username, name, pwd, rsaSk, rsaPk, rsaCp, desKey, desCp, aesKey, aesNonce, aesHeader, aesTag, aesCp) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"

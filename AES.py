@@ -25,16 +25,6 @@ def aes_encrypt(header, data):
     encryption_time = (timeit.default_timer() - encrypt_start) * 1000
     print(f"Encryption time: {encryption_time:.4f} ms")
 
-    # Store the nonce, header, ciphertext, and tag in a dictionary
-    # Encode each part to base64 string for easier handling
-    # aes_ciphertext = {
-    #   'nonce': base64.b64encode(aes.nonce).decode('utf-8'),
-    #   'header': base64.b64encode(header).decode('utf-8'),
-    #   'ciphertext': base64.b64encode(ciphertext).decode('utf-8'),
-    #   'tag': base64.b64encode(tag).decode('utf-8')
-    # }
-    # return aes_ciphertext, key
-
     return key, aes.nonce, header, tag, ciphertext
 
 def aes_decrypt(key, nonce, header, tag, ciphertext):
