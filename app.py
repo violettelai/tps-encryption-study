@@ -4,6 +4,7 @@ import RSA, DES, AES
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import numpy as np
 
 app = Flask(__name__)
 
@@ -124,8 +125,11 @@ def register():
     timing_data['registration'].append({
         "username": username,
         "password": password,
+        "rsa_keygen_time": rsa_keygen_time,
         "rsa_encryption_time": rsa_encrypt_time,
+        "des_keygen_time": des_keygen_time,
         "des_encryption_time": des_encrypt_time,
+        "aes_keygen_time": aes_keygen_time,
         "aes_encryption_time": aes_encrypt_time
     })
 
@@ -148,6 +152,19 @@ def visualize():
 
     # Combine DataFrames for Analysis
     combined_df = registration_df.merge(login_df, on="username")
+    print("cdf", combined_df)
+
+    # Plot Key Generation Times
+    plt.figure(figsize=(10, 5))
+    plt.bar(combined_df["username"], combined_df["rsa_keygen_time"], label="RSA", alpha=0.7)
+    plt.bar(combined_df["username"], combined_df["des_keygen_time"], label="DES", alpha=0.5)
+    plt.bar(combined_df["username"], combined_df["aes_keygen_time"], label="AES", alpha=0.3)
+    plt.xlabel("Username")
+    plt.ylabel("Key Generation Time (ms)")
+    plt.title("Key Generation Time by Username")
+    plt.legend()
+    plt.savefig('static/img/keygen_times.png')
+    plt.close()
 
     # Plot Encryption Times
     plt.figure(figsize=(10, 5))
@@ -158,7 +175,7 @@ def visualize():
     plt.ylabel("Encryption Time (ms)")
     plt.title("Encryption Time by Username")
     plt.legend()
-    # plt.savefig('static/img/encryption_times.png')
+    plt.savefig('static/img/encryption_times.png')
     plt.close()
 
     # Plot Decryption Times
@@ -170,7 +187,7 @@ def visualize():
     plt.ylabel("Decryption Time (ms)")
     plt.title("Decryption Time by Username")
     plt.legend()
-    # plt.savefig('static/img/decryption_times.png')
+    plt.savefig('static/img/decryption_times.png')
     plt.close()
 
     # Plot Success Rates
@@ -185,7 +202,7 @@ def visualize():
     plt.ylabel("Success Rate")
     plt.title("Success Rate by Encryption Method")
     plt.ylim(0, 1)
-    # plt.savefig('static/img/success_rates.png')
+    plt.savefig('static/img/success_rates.png')
     plt.close()
 
     return render_template("visualize.html")
