@@ -1,10 +1,24 @@
 from flask import Flask, render_template, request, redirect
+import mysql.connector
 
 app = Flask(__name__)
 
 @app.route("/")
 def fetchLoginTemplate():
     return render_template("login.html")
+
+@app.route("/init", methods=["POST"])
+def init():
+    db = mysql.connector.connect(host="localhost", user="root", password="")
+    dbcursor = db.cursor()
+
+    dbcursor.execute("CREATE DATABASE IF NOT EXISTS pysec")
+    # db = mysql.connector.connect(host="localhost", user="root", password="", database="pysec2")
+    
+    dbcursor.execute("USE pysec")
+    # dbcursor = db.cursor()
+    dbcursor.execute("CREATE TABLE IF NOT EXISTS user (username VARCHAR(255) PRIMARY KEY, name VARCHAR(255), pwd VARCHAR(255))")
+    return "Database and table successfully created."
 
 @app.route("/login", methods=["POST"])
 def login():

@@ -1,6 +1,18 @@
-// window.onload = function() {
-//   alert("This is a message from script.js!");
-// };
+window.onload = function() {
+    fetch('/init', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.text())
+    .then(result => {
+        console.log(result);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+};
 
 document.addEventListener("DOMContentLoaded", function() {
   const loginForm = document.getElementById("loginForm");
