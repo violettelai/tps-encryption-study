@@ -11,7 +11,7 @@ def aes_encrypt(header, data):
     keygen_start = timeit.default_timer()
     key = get_random_bytes(32)
     keygen_time = (timeit.default_timer() - keygen_start) * 1000
-    print(f"Key generation time: {keygen_time:.4f} ms")
+    print(f"AES key generation time: {keygen_time:.4f} ms")
 
     # Create a new AES cipher object in GCM mode
     aes = AES.new(key, AES.MODE_GCM)
@@ -23,7 +23,7 @@ def aes_encrypt(header, data):
     encrypt_start = timeit.default_timer()
     ciphertext, tag = aes.encrypt_and_digest(data)
     encryption_time = (timeit.default_timer() - encrypt_start) * 1000
-    print(f"Encryption time: {encryption_time:.4f} ms")
+    print(f"AES encryption time: {encryption_time:.4f} ms")
 
     return key, aes.nonce, header, tag, ciphertext
 
@@ -38,7 +38,7 @@ def aes_decrypt(key, nonce, header, tag, ciphertext):
     decryption_start = timeit.default_timer()
     data = c.decrypt_and_verify(ciphertext, tag)
     decryption_time = (timeit.default_timer() - decryption_start) * 1000
-    print(f"Decryption time: {decryption_time:.4f} ms")
+    print(f"AES decryption time: {decryption_time:.4f} ms")
 
     # Decode the decrypted data from bytes to string and return it
     return data.decode('utf-8')

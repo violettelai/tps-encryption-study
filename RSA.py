@@ -7,7 +7,7 @@ def generateKeys():
     keygen_start = timeit.default_timer()
     key = RSA.generate(1024)
     keygen_time = (timeit.default_timer() - keygen_start) * 1000
-    print(f"Key generation time: {keygen_time:.4f} ms")
+    print(f"RSA key generation time: {keygen_time:.4f} ms")
     
     # Set the private_key variable to the generated key and convert to byte
     privateKey = key.export_key(format='PEM')
@@ -28,7 +28,7 @@ def rsa_encrypt(text, publicKey):
     encrypt_start = timeit.default_timer()
     ciphertext = cipher_rsa.encrypt(text.encode('utf-8'))
     encrypt_time = (timeit.default_timer() - encrypt_start) * 1000
-    print(f"Encryption time: {encrypt_time:.4f} ms")
+    print(f"RSA encryption time: {encrypt_time:.4f} ms")
     
     return ciphertext
 
@@ -42,7 +42,7 @@ def rsa_decrypt(ciphertext, privateKey):
     decrypt_start = timeit.default_timer()
     plaintext = cipher_rsa.decrypt(ciphertext)
     decrypt_time = (timeit.default_timer() - decrypt_start) * 1000
-    print(f"Decryption time: {decrypt_time:.4f} ms")
+    print(f"RSA decryption time: {decrypt_time:.4f} ms")
     
     return plaintext.decode('utf-8')
 

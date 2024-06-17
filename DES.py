@@ -13,7 +13,7 @@ def des3_encrypt(plaintext):
     # Key gen time
     keygen_start = timeit.default_timer()
     keygen_time = (timeit.default_timer() - keygen_start) * 1000
-    print(f"Key generation time: {keygen_time:.4f} ms")
+    print(f"DES key generation time: {keygen_time:.4f} ms")
   
     # Create DES3 cipher object with key in ECB mode
     # ECB mode is weaker operation mode, but offers more data integrity
@@ -25,7 +25,7 @@ def des3_encrypt(plaintext):
     encrypt_start = timeit.default_timer()
     ciphertext = des3.encrypt(padded_plaintext)
     encrypt_time = (timeit.default_timer() - encrypt_start) * 1000
-    print(f"Encryption time: {encrypt_time:.4f} ms")
+    print(f"DES encryption time: {encrypt_time:.4f} ms")
     
     return ciphertext, key
 
@@ -35,7 +35,7 @@ def des3_decrypt(ciphertext, key):
     decrypt_start = timeit.default_timer()
     decryptedtext = des3.decrypt(ciphertext)
     decrypt_time = (timeit.default_timer() - decrypt_start) * 1000
-    print(f"Decryption time: {decrypt_time:.4f} ms")
+    print(f"DES decryption time: {decrypt_time:.4f} ms")
     
     # Unpad plaintext to original block size
     plaintext = unpad(decryptedtext, des3.block_size)
