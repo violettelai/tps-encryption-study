@@ -43,7 +43,8 @@ def aes_decrypt(aes_ciphertext, key):
     # Decode the decrypted data from bytes to string and return it
     return data.decode('utf-8')
 
-aes_ciphertext, aes_key = aes_encrypt("1191103300", "Hi, my name is Evon Ng.")
-print("AES encrypted ciphertext:", aes_ciphertext)
-data = aes_decrypt(aes_ciphertext, aes_key)
-print("AES decrypted data:",data)
+if __name__ == "__main__":
+    aes_ciphertext, aes_key = aes_encrypt("1191103300", "Hi, my name is Evon Ng.")
+    print("AES encrypted ciphertext:", aes_ciphertext)
+    data = aes_decrypt(aes_ciphertext, aes_key)
+    print("AES decrypted data:",data)
