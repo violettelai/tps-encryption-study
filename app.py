@@ -141,6 +141,9 @@ def register():
 
 @app.route("/visualize", methods=['GET'])
 def visualize():
+    # Set the Matplotlib backend to 'Agg'
+    plt.switch_backend('Agg')
+
     # Create directory if it doesn't exist
     if not os.path.exists('static/img'):
         os.makedirs('static/img')
@@ -151,7 +154,6 @@ def visualize():
 
     # Combine DataFrames for Analysis
     combined_df = registration_df.merge(login_df, on="username")
-    print("cdf", combined_df)
 
     # Plot Key Generation Times
     plt.figure(figsize=(10, 5))
