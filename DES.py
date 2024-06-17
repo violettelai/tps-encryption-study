@@ -25,7 +25,7 @@ def des3_encrypt(plaintext):
     encrypt_time = (timeit.default_timer() - encrypt_start) * 1000
     print(f"DES encryption time: {encrypt_time:.4f} ms")
     
-    return ciphertext, key
+    return ciphertext, key, keygen_time, encrypt_time
 
 def des3_decrypt(ciphertext, key):
     des3 = DES3.new(key, DES3.MODE_ECB)
@@ -38,7 +38,7 @@ def des3_decrypt(ciphertext, key):
     # Unpad plaintext to original block size
     plaintext = unpad(decryptedtext, des3.block_size)
     
-    return plaintext.decode('utf-8')
+    return plaintext.decode('utf-8'), decrypt_time
 
 if __name__ == "__main__":
     text = "1191103341 Violette Lai"

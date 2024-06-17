@@ -15,7 +15,7 @@ def generateKeys():
     # Derive the public key from the generated key and convert to byte
     publicKey = key.publickey().export_key(format='PEM')
     
-    return privateKey, publicKey 
+    return privateKey, publicKey, keygen_time
 
 def rsa_encrypt(text, publicKey):
     # Convert byte public key to RSA class object
@@ -30,7 +30,7 @@ def rsa_encrypt(text, publicKey):
     encrypt_time = (timeit.default_timer() - encrypt_start) * 1000
     print(f"RSA encryption time: {encrypt_time:.4f} ms")
     
-    return ciphertext
+    return ciphertext, encrypt_time
 
 def rsa_decrypt(ciphertext, privateKey):
     # Convert byte private key to RSA class object
@@ -44,7 +44,7 @@ def rsa_decrypt(ciphertext, privateKey):
     decrypt_time = (timeit.default_timer() - decrypt_start) * 1000
     print(f"RSA decryption time: {decrypt_time:.4f} ms")
     
-    return plaintext.decode('utf-8')
+    return plaintext.decode('utf-8'), decrypt_time
 
 if __name__ == "__main__":
     privateKey, publicKey = generateKeys()

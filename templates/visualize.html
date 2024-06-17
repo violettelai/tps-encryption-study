@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualization</title>
+</head>
+<body>
+    <h1>Encryption Time by Method</h1>
+    <img src="{{ url_for('static', filename='img/encryption_times.png') }}" alt="Encryption Times">
+    
+    <h1>Decryption Time by Method</h1>
+    <img src="{{ url_for('static', filename='img/decryption_times.png') }}" alt="Decryption Times">
+
+    <h1>Success Rate by Method</h1>
+    <img src="{{ url_for('static', filename='img/success_rates.png') }}" alt="Success Rates">
+</body>
+</html>

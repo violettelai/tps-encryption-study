@@ -25,7 +25,7 @@ def aes_encrypt(header, data):
     encryption_time = (timeit.default_timer() - encrypt_start) * 1000
     print(f"AES encryption time: {encryption_time:.4f} ms")
 
-    return key, aes.nonce, header, tag, ciphertext
+    return key, aes.nonce, header, tag, ciphertext, keygen_time, encryption_time
 
 def aes_decrypt(key, nonce, header, tag, ciphertext):
     # Create a new AES cipher object in GCM mode with the nonce
@@ -41,7 +41,7 @@ def aes_decrypt(key, nonce, header, tag, ciphertext):
     print(f"AES decryption time: {decryption_time:.4f} ms")
 
     # Decode the decrypted data from bytes to string and return it
-    return data.decode('utf-8')
+    return data.decode('utf-8'), decryption_time
 
 if __name__ == "__main__":
     aes_key, aes_nonce, aes_header, aes_tag, aes_ciphertext = aes_encrypt("1191103300", "Hi, my name is Evon Ng.")
