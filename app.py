@@ -52,6 +52,7 @@ def fetchRegisterTemplate():
 @app.route("/register", methods=['POST'])
 def register():
     data = request.get_json()
+    name = data.get("name")
     username = data.get("username")
     password = data.get("password")
     conpass = data.get("conpassword")
