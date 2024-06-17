@@ -15,6 +15,13 @@
   object-fit: cover;
 }
 
+#registerBody {
+  background-image: url("/static/MMU.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  object-fit: cover;
+}
+
 .centerDiv {
   display: flex;
   flex-direction: column;
@@ -52,6 +59,19 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
   background-color: rgba(255, 255, 255, 0.8);
 }
+
+#registerSection {
+  text-align: left;
+  backdrop-filter: blur(30px);
+  padding: 10px;
+  min-width: 350px;
+  max-width: 350px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .3);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
 
 .rSection h1 {
   text-align: center;
@@ -102,6 +122,12 @@
 }
 
 #loginResponse {
+    margin-top: -10px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#registerResponse {
     margin-top: -10px;
     text-align: center;
     font-size: 16px;

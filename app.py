@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
@@ -31,10 +31,16 @@ def register():
     data = request.get_json()
     username = data.get("username")
     password = data.get("password")
+    conpass = data.get("conpassword")
     
     # Encrypt in 3 ways
     
     # Insert DB
+
+    if password != conpass:
+        return "Passwords are not the same!"
+    else: 
+        return "Registration successful!"
     
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)

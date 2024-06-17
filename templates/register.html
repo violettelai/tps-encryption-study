@@ -1,9 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>PS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
-<body>
-    <h1>Registration</h1>
+
+<body id = "registerBody">
+    <div class="container centerDiv">
+        <div class="sectionContainer rSection centerDiv" id="registerSection">
+            <div>
+                <h1>Register</h1>
+            </div>
+            <div class="centerDiv">
+                <form id="registerForm" method="POST" action="/register">
+                    <div class="fixedSizeForm">
+                        <label for="username">Username</label><br>
+                        <input type="text" name="username" class="bottomBorder" placeholder="Username" required><br><br>
+                        <label for="password">Password</label><br>
+                        <input type="password" name="password" class="bottomBorder" placeholder="Password" required><br><br>
+                        <label for="confirm_password">Confirm Password</label><br>
+                        <input type="password" name="conpassword" class="bottomBorder" placeholder="Confirm Password" required><br><br>
+                    </div>
+                    <p id="registerResponse"></p>
+                    <div class="buttonContainer">
+                        <input type="submit" value="Register" class="button posButton">
+                        <button class="button posButton" onclick="window.location.href='/'">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
