@@ -7,11 +7,9 @@ import timeit
 def des3_encrypt(plaintext): 
     plaintext = plaintext.encode('utf-8')
 
+    keygen_start = timeit.default_timer()
     # DES3 uses 3 keys, each key is 8-bytes, total 24-byte
     key = get_random_bytes(24)
-    
-    # Key gen time
-    keygen_start = timeit.default_timer()
     keygen_time = (timeit.default_timer() - keygen_start) * 1000
     print(f"DES key generation time: {keygen_time:.4f} ms")
   
