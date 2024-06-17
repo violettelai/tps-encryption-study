@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 import mysql.connector
+import RSA
 
 app = Flask(__name__)
 
@@ -11,11 +12,10 @@ def fetchLoginTemplate():
 def init():
     db = mysql.connector.connect(host="localhost", user="root", password="")
     dbcursor = db.cursor()
-    dbcursor.execute("CREATE DATABASE IF NOT EXISTS pysec")
-    # db = mysql.connector.connect(host="localhost", user="root", password="", database="pysec2")    
+    dbcursor.execute("CREATE DATABASE IF NOT EXISTS pysec")   
     dbcursor.execute("USE pysec")
-    # dbcursor = db.cursor()
-    dbcursor.execute("CREATE TABLE IF NOT EXISTS user (username VARCHAR(255) PRIMARY KEY, name VARCHAR(255), pwd VARCHAR(255), rsakey BLOB)")
+    # dbcursor.execute("DROP Table user")
+    dbcursor.execute("CREATE TABLE IF NOT EXISTS user (username VARCHAR(255) PRIMARY KEY, name VARCHAR(255), pwd VARCHAR(255), rsaSk BLOB, rsaPk BLOB, rsaC BLOB)")
     return "Database and table successfully created."
 
 @app.route("/login", methods=["POST"])
@@ -31,12 +31,16 @@ def login():
     uname = (username, )
     dbcursor.execute(sql, uname)
     result = dbcursor.fetchone()
-    print(f"result: {result}")
+    # print(f"result: {result}")
 
     # Decrypt in 3 ways
+    # RSA
+    # print(f"get: {result[3]}\n{result[4]}\nciphertext: {result[5]}")
+    plaintext = RSA.rsa_decrypt(result[5], result[3])
+    # print("Plaintext: {}".format(plaintext))
 
     # Check valid credentials
-    if password == result[2]:
+    if password == plaintext:
         return f"Welcome, {username}!"
     else:
         return "Invalid credentials, please try again."
@@ -54,8 +58,6 @@ def register():
     
     if password != conpass: return "Passwords are not the same!"
     
-    # Encrypt in 3 ways
-    
     db = mysql.connector.connect(host="localhost", user="root", password="", database="pysec")
     dbcursor = db.cursor()
     
@@ -64,15 +66,20 @@ def register():
     uname = (username, )
     dbcursor.execute(sql, uname)
     result = dbcursor.fetchone()
+    if(result != None): return "Username exists."
+    
+    # Encrypt in 3 ways
+    # RSA
+    privateKey, publicKey = RSA.generateKeys()
+    ciphertext = RSA.rsa_encrypt(password, publicKey)
+    # print(f"db: {privateKey}\n{publicKey}\nciphertext: {ciphertext}")
 
-    if(result == None):
-        # Insert DB
-        sql = "INSERT INTO user (username, pwd) VALUES (%s, %s)"
-        val = (username, password)
-        dbcursor.execute(sql, val)
-        db.commit()
-        return "Registered successfully!"
-    else: return "Username exists."
+    # Insert DB
+    sql = "INSERT INTO user (username, pwd, rsaSk, rsaPk, rsaC) VALUES (%s, %s, %s, %s, %s)"
+    val = (username, password, privateKey, publicKey, ciphertext)
+    dbcursor.execute(sql, val)
+    db.commit()
+    return "Registered successfully!"
     
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)
