@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
 import RSA, DES, AES
 import pandas as pd
@@ -148,65 +148,70 @@ def visualize():
     if not os.path.exists('static/img'):
         os.makedirs('static/img')
 
-    # Combine registration and login data
-    registration_df = pd.DataFrame(timing_data["registration"])
-    login_df = pd.DataFrame(timing_data["login"])
+    try:
+        # Combine registration and login data
+        registration_df = pd.DataFrame(timing_data["registration"])
+        login_df = pd.DataFrame(timing_data["login"])
 
-    # Combine DataFrames for Analysis
-    combined_df = registration_df.merge(login_df, on="username")
+        # Combine DataFrames for Analysis
+        combined_df = registration_df.merge(login_df, on="username")
 
-    # Plot Key Generation Times
-    plt.figure(figsize=(10, 5))
-    plt.bar(combined_df["username"], combined_df["rsa_keygen_time"], label="RSA", alpha=0.7)
-    plt.bar(combined_df["username"], combined_df["des_keygen_time"], label="DES", alpha=0.5)
-    plt.bar(combined_df["username"], combined_df["aes_keygen_time"], label="AES", alpha=0.3)
-    plt.xlabel("Username")
-    plt.ylabel("Key Generation Time (ms)")
-    plt.title("Key Generation Time by Username")
-    plt.legend()
-    plt.savefig('static/img/keygen_times.png')
-    plt.close()
+        # Plot Key Generation Times
+        plt.figure(figsize=(10, 5))
+        plt.bar(combined_df["username"], combined_df["rsa_keygen_time"], label="RSA", alpha=0.7)
+        plt.bar(combined_df["username"], combined_df["des_keygen_time"], label="DES", alpha=0.5)
+        plt.bar(combined_df["username"], combined_df["aes_keygen_time"], label="AES", alpha=0.3)
+        plt.xlabel("Username")
+        plt.ylabel("Key Generation Time (ms)")
+        plt.title("Key Generation Time by Username")
+        plt.legend()
+        plt.savefig('static/img/keygen_times.png')
+        plt.close()
 
-    # Plot Encryption Times
-    plt.figure(figsize=(10, 5))
-    plt.bar(combined_df["username"], combined_df["rsa_encryption_time"], label="RSA", alpha=0.7)
-    plt.bar(combined_df["username"], combined_df["des_encryption_time"], label="DES", alpha=0.5)
-    plt.bar(combined_df["username"], combined_df["aes_encryption_time"], label="AES", alpha=0.3)
-    plt.xlabel("Username")
-    plt.ylabel("Encryption Time (ms)")
-    plt.title("Encryption Time by Username")
-    plt.legend()
-    plt.savefig('static/img/encryption_times.png')
-    plt.close()
+        # Plot Encryption Times
+        plt.figure(figsize=(10, 5))
+        plt.bar(combined_df["username"], combined_df["rsa_encryption_time"], label="RSA", alpha=0.7)
+        plt.bar(combined_df["username"], combined_df["des_encryption_time"], label="DES", alpha=0.5)
+        plt.bar(combined_df["username"], combined_df["aes_encryption_time"], label="AES", alpha=0.3)
+        plt.xlabel("Username")
+        plt.ylabel("Encryption Time (ms)")
+        plt.title("Encryption Time by Username")
+        plt.legend()
+        plt.savefig('static/img/encryption_times.png')
+        plt.close()
 
-    # Plot Decryption Times
-    plt.figure(figsize=(10, 5))
-    plt.bar(combined_df["username"], combined_df["rsa_decryption_time"], label="RSA", alpha=0.7)
-    plt.bar(combined_df["username"], combined_df["des_decryption_time"], label="DES", alpha=0.5)
-    plt.bar(combined_df["username"], combined_df["aes_decryption_time"], label="AES", alpha=0.3)
-    plt.xlabel("Username")
-    plt.ylabel("Decryption Time (ms)")
-    plt.title("Decryption Time by Username")
-    plt.legend()
-    plt.savefig('static/img/decryption_times.png')
-    plt.close()
+        # Plot Decryption Times
+        plt.figure(figsize=(10, 5))
+        plt.bar(combined_df["username"], combined_df["rsa_decryption_time"], label="RSA", alpha=0.7)
+        plt.bar(combined_df["username"], combined_df["des_decryption_time"], label="DES", alpha=0.5)
+        plt.bar(combined_df["username"], combined_df["aes_decryption_time"], label="AES", alpha=0.3)
+        plt.xlabel("Username")
+        plt.ylabel("Decryption Time (ms)")
+        plt.title("Decryption Time by Username")
+        plt.legend()
+        plt.savefig('static/img/decryption_times.png')
+        plt.close()
 
-    # Plot Success Rates
-    success_rates = {
-        "RSA": combined_df["rsa_success"].mean(),
-        "DES": combined_df["des_success"].mean(),
-        "AES": combined_df["aes_success"].mean()
-    }
-    plt.figure(figsize=(10, 5))
-    plt.bar(success_rates.keys(), success_rates.values(), color=["blue", "orange", "green"])
-    plt.xlabel("Encryption Method")
-    plt.ylabel("Success Rate")
-    plt.title("Success Rate by Encryption Method")
-    plt.ylim(0, 1)
-    plt.savefig('static/img/success_rates.png')
-    plt.close()
+        # Plot Success Rates
+        success_rates = {
+            "RSA": combined_df["rsa_success"].mean(),
+            "DES": combined_df["des_success"].mean(),
+            "AES": combined_df["aes_success"].mean()
+        }
+        plt.figure(figsize=(10, 5))
+        plt.bar(success_rates.keys(), success_rates.values(), color=["blue", "orange", "green"])
+        plt.xlabel("Encryption Method")
+        plt.ylabel("Success Rate")
+        plt.title("Success Rate by Encryption Method")
+        plt.ylim(0, 1)
+        plt.savefig('static/img/success_rates.png')
+        plt.close()
 
-    return render_template("visualize.html")
+        return render_template("visualize.html")
+    except Exception as e:
+        # If an error occurs, log the error and redirect to the main page
+        print(f"Error combining dataframes: {e}")
+        return redirect(url_for('fetchLoginTemplate'))
     
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)
